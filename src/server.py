@@ -4,6 +4,20 @@ import socket
 import sys
 
 
+def response_ok():
+    return """
+HTTP/1.1 200 OK
+Content-Type: text/plain
+Success"""
+
+
+def response_error():
+    return """
+HTTP/1.1 500 Internal Server Error
+Content-Type: text/plain
+Server Error"""
+
+
 def server():
     """."""
     server = socket.socket(socket.AF_INET,
@@ -14,6 +28,7 @@ def server():
 
     while True:
         try:
+
             connection, address = server.accept()
 
             buffer_length = 8
@@ -27,7 +42,9 @@ def server():
                 if len(part) < buffer_length:
                     break
 
-            connection.sendall(message.encode('utf8'))
+            print(message[:-1])
+            print(response_ok().encode('utf8'))
+            connection.sendall(response_ok().encode('utf8'))
             connection.close()
 
         except KeyboardInterrupt:
