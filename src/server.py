@@ -18,15 +18,15 @@ def server():
 
             buffer_length = 64
             message_complete = False
-            message = b''
+            message = ''
             while not message_complete:
-                part = connection.recv(buffer_length)
+                part = connection.recv(buffer_length).decode()
                 message += part
 
                 if len(part) < buffer_length:
                     break
 
-            connection.sendall(message)
+            connection.sendall(message.encode('utf8'))
             connection.close()
 
         except KeyboardInterrupt:

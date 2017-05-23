@@ -13,17 +13,18 @@ def client(message):
     client.sendall(message.encode('utf8'))
 
     buffer_length = 64
-    message = b''
+    message = ''
 
     while True:
-        part = client.recv(buffer_length)
+        part = client.recv(buffer_length).decode()
         message += part
 
         if '*' in message:
             break
 
     client.close()
-    return message
+    print(message[:-1])
+    return message[:-1]
 
 if __name__ == '__main__': #pragma: no cover
     """."""
