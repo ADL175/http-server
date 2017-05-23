@@ -9,18 +9,17 @@ def client(message):
     stream_info = [i for i in address_info if i[1] == socket.SOCK_STREAM][0]
     client = socket.socket(*stream_info[:3])
     client.connect(stream_info[-1])
+    message += '*'
     client.sendall(message.encode('utf8'))
 
     buffer_length = 64
-    reply_complete = False
     message = b''
 
-    while not reply_complete:
+    while True:
         part = client.recv(buffer_length)
         message += part
 
-        if len(part) < buffer_length:
-            print(message.decode('utf8'))
+        if '*' in message:
             break
 
     client.close()
