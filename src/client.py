@@ -1,4 +1,4 @@
-"""This is a client socket"""
+"""This is the client socket for our echo application."""
 
 import socket
 

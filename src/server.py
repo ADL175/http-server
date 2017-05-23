@@ -1,7 +1,10 @@
+"""This is the server socket for our echo application."""
+
 import socket
 
 
 def server():
+    """."""
     server = socket.socket(socket.AF_INET,
                            socket.SOCK_STREAM, socket.IPPROTO_TCP)
 
