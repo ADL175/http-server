@@ -7,11 +7,7 @@ DEPENDENCIES = ['pytest', 'pytest-cov', 'ipython']
 EXTRA_PACKAGES = {
     'test': ['tox']
 }
-CONSOLE_SCRIPTS = {
-    'console_scripts': [
-        'test_servers = test_servers:main'
-    ]
-}
+
 setup(
     name="http-server",
     description="""A module that implements an echo server.""",
@@ -21,6 +17,5 @@ setup(
     license='MIT',
     package_dir={'': 'src'},
     install_requires=DEPENDENCIES,
-    extras_require=EXTRA_PACKAGES,
-    entry_points=CONSOLE_SCRIPTS
+    extras_require=EXTRA_PACKAGES
 )

@@ -1,0 +1,22 @@
+appnope==0.1.0
+coverage==4.4.1
+decorator==4.0.11
+-e git+https://github.com/ADL175/http-server.git@78b4cd0c31df10e7c469a5cadc0ecb3f8524d5c8#egg=http_server
+ipython==6.0.0
+ipython-genutils==0.2.0
+jedi==0.10.2
+pexpect==4.2.1
+pickleshare==0.7.4
+pluggy==0.4.0
+prompt-toolkit==1.0.14
+ptyprocess==0.5.1
+py==1.4.33
+Pygments==2.2.0
+pytest==3.1.0
+pytest-cov==2.5.1
+simplegeneric==0.8.1
+six==1.10.0
+tox==2.7.0
+traitlets==4.3.2
+virtualenv==15.1.0
+wcwidth==0.1.7

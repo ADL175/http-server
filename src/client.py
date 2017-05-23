@@ -12,7 +12,7 @@ def client(message):
     message += '*'
     client.sendall(message.encode('utf8'))
 
-    buffer_length = 64
+    buffer_length = 8
     message = ''
 
     while True:

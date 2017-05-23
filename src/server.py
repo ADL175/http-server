@@ -16,9 +16,10 @@ def server():
         try:
             connection, address = server.accept()
 
-            buffer_length = 64
+            buffer_length = 8
             message_complete = False
             message = ''
+
             while not message_complete:
                 part = connection.recv(buffer_length).decode()
                 message += part
