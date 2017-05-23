@@ -14,8 +14,8 @@ def client(message):
 
     client.sendall(message.encode('utf8'))
 
-
     # receive data
+
     buffer_length = 8
     reply_complete = False
 
@@ -32,5 +32,3 @@ if __name__ == '__main__':
     import sys
     message = sys.argv[1]
     client(message)
-
-
