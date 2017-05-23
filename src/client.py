@@ -23,7 +23,10 @@ def client(message):
             print(message.decode('utf8'))
             break
 
-if __name__ == '__main__':
+    client.close()
+    return message
+
+if __name__ == '__main__': #pragma: no cover
     """."""
     message = sys.argv[1]
     client(message)
