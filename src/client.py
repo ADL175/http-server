@@ -12,6 +12,20 @@ def client(message):
 
     client.connect(stream_info[-1])
 
+    client.sendall(message.encode('utf8'))
+
+
+    # receive data
+    buffer_length = 8
+    reply_complete = False
+
+    while not reply_complete:
+        part = client.recv(buffer_length)
+        print(part.decode('utf8'))
+
+        if len(part) < buffer_length:
+            break
+
 
 if __name__ == '__main__':
     """."""
