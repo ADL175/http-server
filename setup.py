@@ -9,7 +9,7 @@ EXTRA_PACKAGES = {
 }
 CONSOLE_SCRIPTS = {
     'console_scripts': [
-        'linked_list = linked_list:main'
+        'test_servers = test_servers:main'
     ]
 }
 setup(
