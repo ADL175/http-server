@@ -13,7 +13,9 @@ def server():
 
     connection, address = server.accept()
 
-    while not reply_complete:
+    buffer_length = 8
+    message_complete = False
+    while not message_complete:
         part = connection.recv(buffer_length)
         print(part.decode('utf8'))
 
@@ -21,7 +23,7 @@ def server():
             break
 
     message = "I hear you, loud and clear!"
-    connnection.sendall(message.encode('utf8'))
+    connection.sendall(message.encode('utf8'))
 
 
 if __name__ == '__main__':
