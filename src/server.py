@@ -1,32 +1,38 @@
 import socket
+import sys
 
 
 def server():
     server = socket.socket(socket.AF_INET,
-                           socket.SOCK_STREAM, socket.IPPROTO_TCP)
-
+                           socket.SOCK_STREAM,
+                           socket.IPPROTO_TCP)
     address = ('127.0.0.1', 5000)
-
     server.bind(address)
-
     server.listen(1)
+    while True:
+        try:
+            connection, address = server.accept()
 
-    connection, address = server.accept()
+            buffer_length = 8
+            message_complete = False
+            msg = b''
+            while not message_complete:
+                part = connection.recv(buffer_length)
+                msg += part
 
-    buffer_length = 8
-    message_complete = False
-    while not message_complete:
-        part = connection.recv(buffer_length)
-        print(part.decode('utf8'))
+                if len(part) < buffer_length:
+                    break
 
-        if len(part) < buffer_length:
-            break
+            connection.sendall(msg)
+            connection.close()
 
-    message = "I hear you, loud and clear!"
-    connection.sendall(message.encode('utf8'))
+        except KeyboardInterrupt:
+            server.close()
+            print('shutting down server')
+            sys.exit()
 
 
 if __name__ == '__main__':
     """."""
-    import sys
+    print("echo server is running")
     server()
