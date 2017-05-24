@@ -5,7 +5,8 @@ import sys
 
 
 def response_ok():
-    return b'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nSuccess*'
+    response = b'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nSuccess*'
+    return response
 
 
 def response_error():
@@ -33,17 +34,19 @@ def server():
             message = ''
 
             while not message_complete:
-                print('inside second while loop.')
+                print(message)
                 part = connection.recv(buffer_length).decode()
                 message += part
 
                 if len(part) < buffer_length:
+                    #break
+                    response = response_ok()
+                    # print(response)
+                    # print(message[:-1])
+                    # print(response_ok())
+                    connection.sendall(response)
+                    connection.close()
                     break
-
-            print(message[:-1])
-            print(response_ok())
-            connection.sendall(response_ok())
-            connection.close()
 
         except KeyboardInterrupt:
             server.close()
