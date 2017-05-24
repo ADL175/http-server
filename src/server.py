@@ -2,14 +2,17 @@
 
 import socket
 import sys
+from email.utils import formatdate
 
 
 def response_ok():
-    return b'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nSuccess*'
+    message = b'HTTP/1.1 200 OK\r\n\r\n'
+    message += u'Date: {}'.format(formatdate(usegmt=True)).encode('utf8')
+    return message + b'\r\n\r\n'
 
 
 def response_error():
-    return b'HTTP/1.1 500 Internal Server Error\r\nContent-Type: text/plain\r\nServer Error*'
+    return b'HTTP/1.1 500 Internal Server Error\r\n\r\n'
 
 def server():
     """."""
@@ -21,7 +24,6 @@ def server():
 
     while True:
         try:
-
             connection, address = server.accept()
 
             buffer_length = 8
@@ -29,21 +31,18 @@ def server():
             message = ''
 
             while not message_complete:
-                print(message)
                 part = connection.recv(buffer_length).decode()
                 message += part
 
-                if len(part) < buffer_length:
-                    #break
+                if message.endswith('\r\n\r\n'):
+                    print(message)
                     response = response_ok()
-                    # print(response)
-                    # print(message[:-1])
-                    # print(response_ok())
                     connection.sendall(response)
                     connection.close()
                     break
 
         except KeyboardInterrupt:
+            server.shutdown(socket.SHUT_WR)
             server.close()
             print('Shutting down echo server...')
             sys.exit()
