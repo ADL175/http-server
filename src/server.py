@@ -5,16 +5,11 @@ import sys
 
 
 def response_ok():
-    response = b'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nSuccess*'
-    return response
+    return b'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nSuccess*'
 
 
 def response_error():
-    return """
-HTTP/1.1 500 Internal Server Error
-Content-Type: text/plain
-Server Error"""
-
+    return b'HTTP/1.1 500 Internal Server Error\r\nContent-Type: text/plain\r\nServer Error*'
 
 def server():
     """."""
