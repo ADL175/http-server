@@ -61,6 +61,9 @@ def server():
 
                 if message.endswith('\r\n\r\n'):
                     print(message)
+                    try:
+                        parse_request(message)
+                    # except Error
                     response = response_ok()
                     connection.sendall(response)
                     connection.close()
