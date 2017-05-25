@@ -17,7 +17,14 @@ def parse_request(request):
             if list_str[3] == 'Host:':
                 return list_str[1]
 
+            else:
+                raise ValueError('Invalid host syntax')
 
+        else:
+            raise ValueError('Wrong HTTP type')
+
+    else:
+        raise ValueError('Should be GET request')
 
 
 
@@ -28,9 +35,14 @@ def response_ok():
 
 
 def response_error(error_code, reason):
-    if error_code == '401' and reason == 'Not Found':
+    if error_code == '400' and reason == 'Bad Request':
         response = 'HTTP/1.1 {} {}\r\n\r\n'.format(error_code, reason)
         return response.encode('utf8')
+
+    elif error_code == '401' and reason == 'Not Found':
+        response = 'HTTP/1.1 {} {}\r\n\r\n'.format(error_code, reason)
+        return response.encode('utf8')
+
     elif error_code == '500' and reason == 'Server Error':
         response = 'HTTP/1.1 {} {}\r\n\r\n'.format(error_code, reason)
         return response.encode('utf8')
@@ -61,9 +73,13 @@ def server():
 
                 if message.endswith('\r\n\r\n'):
                     print(message)
+
                     try:
                         parse_request(message)
-                    # except Error
+
+                    except ValueError:
+                        response_error('400', 'Bad Request')
+
                     response = response_ok()
                     connection.sendall(response)
                     connection.close()

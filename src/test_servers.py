@@ -29,8 +29,3 @@ from server import server
 #     """Test response_error()"""
 #     from server import response_error
 #     assert response_error() == b'HTTP/1.1 500 Internal Server Error\r\nContent-Type: text/plain\r\nServer Error*'
-
-
-PARSE_REQUEST_TABLE F= [
-    ()
-]
