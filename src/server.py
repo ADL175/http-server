@@ -7,7 +7,7 @@ from email.utils import formatdate
 
 def parse_request(request):
     """
-    sample GET request: 
+    sample GET request:
     GET /index.html HTTP/1.1\r\nHost: www.foo.combo\r\n\r\n
     """
     list_str = request.split()
@@ -27,7 +27,16 @@ def response_ok():
     return message + b'\r\n\r\n'
 
 
-def response_error():
+def response_error(error_code, reason):
+    if error_code == '401' and reason == 'Not Found':
+        response = 'HTTP/1.1 {} {}\r\n\r\n'.format(error_code, reason)
+        return response.encode('utf8')
+    elif error_code == '500' and reason == 'Server Error':
+        response = 'HTTP/1.1 {} {}\r\n\r\n'.format(error_code, reason)
+        return response.encode('utf8')
+
+
+
     return b'HTTP/1.1 500 Internal Server Error\r\n\r\n'
 
 def server():
