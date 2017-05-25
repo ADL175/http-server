@@ -5,10 +5,22 @@ import socket
 import sys
 
 
-def main():  # pragma: no cover
-    """Main server loop. Logs data into log variable until it finds a certain character. Then returns response."""
-    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP)
-    address = ('127.0.0.1', 5015)
+def response_ok():
+    """Reutnr a 200 OK response"""
+    return b'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 8 \r\n\r\n'
+
+
+def response_error():
+    """Reutnr a 500 error response"""
+    return b'HTTP/1.1 500 Internal Server Error\r\nContent-Type: text/plain\r\n\r\n' #need line break tells client header is done, due to hypertext protocol
+
+
+def server():
+    """."""
+    server = socket.socket(socket.AF_INET, #address family
+                           socket.SOCK_STREAM, # streaming socket for TCP
+                           socket.IPPROTO_TCP) #
+    address = ('127.0.0.1', 5000)
     server.bind(address)
     server.listen(1)
     while True:
