@@ -37,7 +37,7 @@ def response_error(error_code, reason):
 
 
 
-    return b'HTTP/1.1 500 Internal Server Error\r\n\r\n'
+    # return b'HTTP/1.1 500 Internal Server Error\r\n\r\n'
 
 def server():
     """."""
