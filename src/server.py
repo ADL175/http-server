@@ -10,20 +10,25 @@ def parse_request(request):
     sample GET request:
     GET /index.html HTTP/1.1\r\nHost: www.foo.combo\r\n\r\n
     """
-    list_str = request.split()
-
-    if list_str[0] == 'GET':
-        if list_str[2] == 'HTTP/1.1':
-            if list_str[3] == 'Host:':
+    list_str = request.split('r\n')
+    list_str[0] = list_str[0].split()
+    list_str[1] = list_str[1].split()
+    print(list_str)
+    if list_str[0][0] == 'GET':
+        if list_str[0][2] == 'HTTP/1.1':
+            if list_str[1][0] == 'Host:':
                 return list_str[1]
 
             else:
+                print('get host error')
                 raise ValueError('Invalid host syntax')
 
-        else:
-            raise ValueError('Wrong HTTP type')
+        # else:
+        #     print('get http error')
+        #     raise ValueError('Wrong HTTP type')
 
     else:
+        print('get error')
         raise ValueError('Should be GET request')
 
 
@@ -35,6 +40,7 @@ def response_ok():
 
 
 def response_error(error_code, reason):
+    print('response error called')
     if error_code == '400' and reason == 'Bad Request':
         response = 'HTTP/1.1 {} {}\r\n\r\n'.format(error_code, reason)
         return response.encode('utf8')
@@ -55,7 +61,7 @@ def server():
     """."""
     server = socket.socket(socket.AF_INET,
                            socket.SOCK_STREAM, socket.IPPROTO_TCP)
-    address = ('127.0.0.1', 5001)
+    address = ('127.0.0.1', 5011)
     server.bind(address)
     server.listen(1)
 
@@ -72,13 +78,15 @@ def server():
                 message += part
 
                 if message.endswith('\r\n\r\n'):
-                    print(message)
 
                     try:
                         parse_request(message)
 
                     except ValueError:
-                        response_error('400', 'Bad Request')
+                        response = response_error('400', 'Bad Request')
+                        connection.sendall(response)
+                        connection.close()
+                        break
 
                     response = response_ok()
                     connection.sendall(response)
