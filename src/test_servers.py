@@ -17,13 +17,20 @@ from server import server
 # def test_client(message):
 #     assert client(message) == message
 
-def test_response_ok():
-    """Test response_ok()"""
-    from server import response_ok
-    assert response_ok() == b'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nSuccess*'
+
+# TESTS FOR STEP 1!!!
+# def test_response_ok():
+#     """Test response_ok()"""
+#     from server import response_ok
+#     assert response_ok() == b'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nSuccess*'
+#
+#
+# def test_response_error():
+#     """Test response_error()"""
+#     from server import response_error
+#     assert response_error() == b'HTTP/1.1 500 Internal Server Error\r\nContent-Type: text/plain\r\nServer Error*'
 
 
-def test_response_error():
-    """Test response_error()"""
-    from server import response_error
-    assert response_error() == b'HTTP/1.1 500 Internal Server Error\r\nContent-Type: text/plain\r\nServer Error*'
+PARSE_REQUEST_TABLE F= [
+    ()
+]

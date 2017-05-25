@@ -5,6 +5,22 @@ import sys
 from email.utils import formatdate
 
 
+def parse_request(request):
+    """
+    sample GET request: 
+    GET /index.html HTTP/1.1\r\nHost: www.foo.combo\r\n\r\n
+    """
+    list_str = request.split()
+
+    if list_str[0] == 'GET':
+        if list_str[2] == 'HTTP/1.1':
+            if list_str[3] == 'Host:':
+                return list_str[1]
+
+
+
+
+
 def response_ok():
     message = b'HTTP/1.1 200 OK\r\n\r\n'
     message += u'Date: {}'.format(formatdate(usegmt=True)).encode('utf8')
