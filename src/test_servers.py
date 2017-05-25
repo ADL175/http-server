@@ -3,6 +3,9 @@ import pytest
 from client import client
 from server import server
 
+
+# TESTS FOR ECHO!!!!
+
 # CLIENT_TABLE = [
 #     ('hello'),
 #     ('hello there, I am over 16'),
