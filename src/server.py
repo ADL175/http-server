@@ -10,22 +10,22 @@ def parse_request(request):
     sample GET request:
     GET /index.html HTTP/1.1\r\nHost: www.foo.combo\r\n\r\n
     """
-    list_str = request.split('r\n')
+    list_str = request.split('\r\n')
     list_str[0] = list_str[0].split()
-    list_str[1] = list_str[1].split()
+    # list_str[1] = list_str[1].split()
     print(list_str)
     if list_str[0][0] == 'GET':
         if list_str[0][2] == 'HTTP/1.1':
-            if list_str[1][0] == 'Host:':
-                return list_str[1]
+            if 'Host:' in list_str[1]:
+                return list_str[0][1]
 
             else:
                 print('get host error')
                 raise ValueError('Invalid host syntax')
 
-        # else:
-        #     print('get http error')
-        #     raise ValueError('Wrong HTTP type')
+        else:
+            print('get http error')
+            raise ValueError('Wrong HTTP type')
 
     else:
         print('get error')
@@ -61,7 +61,7 @@ def server():
     """."""
     server = socket.socket(socket.AF_INET,
                            socket.SOCK_STREAM, socket.IPPROTO_TCP)
-    address = ('127.0.0.1', 5011)
+    address = ('127.0.0.1', 5005)
     server.bind(address)
     server.listen(1)
 
@@ -80,7 +80,8 @@ def server():
                 if message.endswith('\r\n\r\n'):
 
                     try:
-                        parse_request(message)
+                        print(parse_request(message))
+
 
                     except ValueError:
                         response = response_error('400', 'Bad Request')
