@@ -3,6 +3,30 @@
 import socket
 import sys
 from email.utils import formatdate
+import os
+import io
+
+
+ROOT_DIRECTORY = './'
+
+
+def resolve_uri(uri):
+
+    """
+    Implement a function called resolve_uri that will take as an argument the URI parsed from a request. 
+    It will return a body for a response and an indication of the type of content contained in the body (as a tuple).
+    """
+    
+    #- If the resource identified by the URI is a directory,
+    # return a simple HTML listing of that directory as the body.
+    if os.path.isdir(uri):
+        pass
+
+    # - If the resource identified by the URI is a file, return the contents of the file as the body.
+    if os.path.isfile(uri):
+        pass
+    # - The content type value should be related to the type of file.
+    # - If the requested resource cannot be found, raise an appropriate Python exception.
 
 
 def parse_request(request):
