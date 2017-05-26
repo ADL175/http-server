@@ -12,17 +12,16 @@ ROOT_DIRECTORY = './'
 
 def resolve_uri(uri):
     content_type_dict = {
-        'image': 'image/jpeg',
-        'png': 'image/png',
-        'txt': 'text/plain',
-        'html': 'text/html'
+        'image': b'image/jpeg',
+        'png': b'image/png',
+        'txt': b'text/plain',
+        'html': b'text/html'
     }
 
     content_length = os.path.getsize(uri)
 
-
     if os.path.isdir(uri):
-        response_body = 'Content-Type: text/directory\r\nContent-Length: {}\r\n\r\n'.format(content_length)
+        response_body = b'Content-Type: text/directory\r\nContent-Length: %s\r\n\r\n' % (content_length)
         uri_contents = os.listdir(uri)
         for item in uri_contents:
             response_body += item + '\n'
@@ -33,10 +32,14 @@ def resolve_uri(uri):
     elif os.path.isfile(uri):
         file_type = uri.split('.')[-1]
         content_type_text = content_type_dict.get(file_type)
-
+        response_body = b'Content-Type: %s \r\nContent-Length: %s\r\n\r\n' % (file_type, content_length)
         uri_file = io.open(uri, 'rb')
-        return uri_file.read()
-
+        response_body += uri_file.read()
+        print(response_body)
+        return response_body
+    else:
+        raise Exception(response_error(404, content))
+    # return tuple thing
 
 def parse_request(request):
     """
