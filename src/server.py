@@ -11,7 +11,6 @@ ROOT_DIRECTORY = './'
 
 
 def resolve_uri(uri):
-
     """
     Implement a function called resolve_uri that will take as an argument the URI parsed from a request. 
     It will return a body for a response and an indication of the type of content contained in the body (as a tuple).
