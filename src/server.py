@@ -7,10 +7,9 @@ import os
 import io
 
 
-ROOT_DIRECTORY = './'
-
 
 def resolve_uri(uri):
+    current_dir = os.getcwd()
     content_type_dict = {
         'image': b'image/jpeg',
         'png': b'image/png',
@@ -19,27 +18,21 @@ def resolve_uri(uri):
     }
 
     content_length = os.path.getsize(uri)
+    content_type = b''
 
     if os.path.isdir(uri):
-        response_body = b'Content-Type: text/directory\r\nContent-Length: %s\r\n\r\n' % (content_length)
-        uri_contents = os.listdir(uri)
-        for item in uri_contents:
-            response_body += item + '\n'
-
-        print(response_body)
-        return response_body
+        content_type = b'text/directory'
+        uri_contents = os.listdir(os.path.join(current_dir, uri))
 
     elif os.path.isfile(uri):
         file_type = uri.split('.')[-1]
-        content_type_text = content_type_dict.get(file_type)
-        response_body = b'Content-Type: %s \r\nContent-Length: %s\r\n\r\n' % (file_type, content_length)
-        uri_file = io.open(uri, 'rb')
-        response_body += uri_file.read()
-        print(response_body)
-        return response_body
+        content_type = content_type_dict.get(file_type)
+        uri_contents = io.open(uri, 'rb').read()
     else:
-        raise Exception(response_error(404, content))
+        raise Exception(response_error(404, 'Not Found'))
     # return tuple thing
+    return (content_type, content_length, uri_contents)
+
 
 def parse_request(request):
     """
@@ -69,10 +62,15 @@ def parse_request(request):
 
 
 
-def response_ok():
+def response_ok(response_body):
+    (content_type, content_length, uri_contents) = response_body
     message = b'HTTP/1.1 200 OK\r\n\r\n'
     message += u'Date: {}'.format(formatdate(usegmt=True)).encode('utf8')
-    return message + b'\r\n\r\n'
+    message += b'Content-Type: %s\r\n' % (content_type)
+    message += b'Content_Length: %d\r\n\r\n' % (content_length)
+    message += uri_contents + '\r\n\r\n'
+    print(message)
+    return message
 
 
 def response_error(error_code, reason):
