@@ -11,28 +11,31 @@ ROOT_DIRECTORY = './'
 
 
 def resolve_uri(uri):
-    """
-    Implement a function called resolve_uri that will take as an argument the URI parsed from a request.
-    It will return a body for a response and an indication of the type of content contained in the body (as a tuple).
-    """
+    content_type_dict = {
+        'image': 'image/jpeg',
+        'png': 'image/png',
+        'txt': 'text/plain',
+        'html': 'text/html'
+    }
 
-    #- If the resource identified by the URI is a directory,
-    # return a simple HTML listing of that directory as the body.
+    content_length = os.path.getsize(uri)
+
+
     if os.path.isdir(uri):
+        response_body = 'Content-Type: text/directory\r\nContent-Length: {}\r\n\r\n'.format(content_length)
         uri_contents = os.listdir(uri)
-        listing_string =
         for item in uri_contents:
-            listing_string += item + '\n'
-        print(listing_string)
-        return listing_string
-    # - If the resource identified by the URI is a file, return the contents of the file as the body.
-    elif os.path.isfile(uri):
-        uri_file = io.open(uri, 'rb')
-        # file_size = os.getsize(uri)
-        return uri_file.read()
+            response_body += item + '\n'
 
-    # - The content type value should be related to the type of file.
-    # - If the requested resource cannot be found, raise an appropriate Python exception.
+        print(response_body)
+        return response_body
+
+    elif os.path.isfile(uri):
+        file_type = uri.split('.')[-1]
+        content_type_text = content_type_dict.get(file_type)
+
+        uri_file = io.open(uri, 'rb')
+        return uri_file.read()
 
 
 def parse_request(request):
