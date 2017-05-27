@@ -4,7 +4,7 @@ import socket
 import sys
 
 def client(message):
-    """."""
+    """Client sends request to server."""
     message = 'GET /index.html HTTP/1.1\r\nHost: www.foo.combo\r\n\r\n'
     address_info = socket.getaddrinfo('127.0.0.1', 5005)
     stream_info = [i for i in address_info if i[1] == socket.SOCK_STREAM][0]
@@ -29,6 +29,5 @@ def client(message):
     return message[:-1]
 
 if __name__ == '__main__': #pragma: no cover
-    """."""
     message = sys.argv[1]
     client(message)

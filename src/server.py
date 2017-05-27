@@ -4,12 +4,14 @@ import socket
 import sys
 from email.utils import formatdate
 
+"""
+sample GET request:
+GET /index.html HTTP/1.1\r\nHost: www.foo.combo\r\n\r\n
+"""
+
 
 def parse_request(request):
-    """
-    sample GET request:
-    GET /index.html HTTP/1.1\r\nHost: www.foo.combo\r\n\r\n
-    """
+    """Take client's incoming request and parses request into list to check values against."""
     list_str = request.split('\r\n')
     list_str[0] = list_str[0].split()
     # list_str[1] = list_str[1].split()
@@ -34,12 +36,14 @@ def parse_request(request):
 
 
 def response_ok():
+    """Responds to client with a reponse ok."""
     message = b'HTTP/1.1 200 OK\r\n\r\n'
     message += u'Date: {}'.format(formatdate(usegmt=True)).encode('utf8')
     return message + b'\r\n\r\n'
 
 
 def response_error(error_code, reason):
+    """Responds to client with a response error."""
     print('response error called')
     if error_code == '400' and reason == 'Bad Request':
         response = 'HTTP/1.1 {} {}\r\n\r\n'.format(error_code, reason)
@@ -58,7 +62,7 @@ def response_error(error_code, reason):
     # return b'HTTP/1.1 500 Internal Server Error\r\n\r\n'
 
 def server():
-    """."""
+    """Server function to process client request."""
     server = socket.socket(socket.AF_INET,
                            socket.SOCK_STREAM, socket.IPPROTO_TCP)
     address = ('127.0.0.1', 5005)
