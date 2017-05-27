@@ -9,6 +9,7 @@ import io
 
 
 def resolve_uri(uri):
+    """Server function to determine type of file and provide response."""
     current_dir = os.getcwd()
     content_type_dict = {
         'image': b'image/jpeg',
@@ -34,11 +35,14 @@ def resolve_uri(uri):
     return (content_type, content_length, uri_contents)
 
 
-def parse_request(request):
     """
     sample GET request:
     GET /index.html HTTP/1.1\r\nHost: www.foo.combo\r\n\r\n
     """
+
+
+def parse_request(request):
+    """Server func to split the client request to method, uri, version."""
     list_str = request.split('\r\n')
     list_str[0] = list_str[0].split()
     # list_str[1] = list_str[1].split()
@@ -61,8 +65,8 @@ def parse_request(request):
         raise ValueError('Should be GET request')
 
 
-
 def response_ok(response_body):
+    """Server function to send response ok."""
     (content_type, content_length, uri_contents) = response_body
     message = b'HTTP/1.1 200 OK\r\n\r\n'
     message += u'Date: {}'.format(formatdate(usegmt=True)).encode('utf8')
@@ -74,6 +78,7 @@ def response_ok(response_body):
 
 
 def response_error(error_code, reason):
+    """Server func to send response error."""
     print('response error called')
     if error_code == '400' and reason == 'Bad Request':
         response = 'HTTP/1.1 {} {}\r\n\r\n'.format(error_code, reason)
@@ -92,7 +97,7 @@ def response_error(error_code, reason):
     # return b'HTTP/1.1 500 Internal Server Error\r\n\r\n'
 
 def server():
-    """."""
+    """Server takes request by client."""
     server = socket.socket(socket.AF_INET,
                            socket.SOCK_STREAM, socket.IPPROTO_TCP)
     address = ('127.0.0.1', 5005)
@@ -136,6 +141,6 @@ def server():
 
 
 if __name__ == '__main__': # pragma: no cover
-    """."""
+    """Run the server function and print to console."""
     print('Your echo server is up and running')
     server()
