@@ -18,7 +18,7 @@ from server import server
 #     assert client(message) == message
 
 
-# step 3 WIP test func:
+# step concurrency WIP test func:
 
 
 def test_good_client_parse_request():
@@ -36,4 +36,23 @@ def test_response_ok():
 def test_response_error():
     """Test response_error()"""
     from server import response_error
+    assert response_error() == b'HTTP/1.1 500 Internal Server Error\r\nContent-Type: text/plain\r\nServer Error*'
+
+
+
+def test_good_client_parse_request():
+    """Gevent test if the client's request is a good request."""
+    from gevent-server/gevent_server import parse_request
+    assert parse_request("GET /index.html HTTP/1.1\r\nHost: www.foo.combo") == 'index.html'
+
+
+def test_response_ok():
+    """Gevent test response_ok()"""
+    from gevent-server/gevent_server import response_ok
+    assert response_ok() == b'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\nSuccess*'
+
+
+def test_response_error():
+    """Gevent test response_error()"""
+    from gevent-server/gevent_server import response_error
     assert response_error() == b'HTTP/1.1 500 Internal Server Error\r\nContent-Type: text/plain\r\nServer Error*'
