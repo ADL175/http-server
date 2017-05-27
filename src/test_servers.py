@@ -11,6 +11,7 @@ from server import server
 # ]
 #
 # @pytest.mark.parametrize('message', CLIENT_TABLE)
+# """Test echo feature."""
 # def test_client(message):
 #     assert client(message) == message
 
