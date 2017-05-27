@@ -16,5 +16,6 @@ CLIENT_TABLE = [
 ]
 
 @pytest.mark.parametrize('message', CLIENT_TABLE)
+"""Testing client is receiving echoed message."""
 def test_client(message):
     assert client(message) == message
