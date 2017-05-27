@@ -42,3 +42,13 @@ Response_ok function updated
   \* exceptions raised should be appropriately handled and returned to the client as meaningful HTTP error responses.
 
 obtained new directory "webroot"
+
+
+<h2>Concurrency</h2>
+
+Incorporating Concurrency for higher traffic
+
+PIP installed gevent
+made new dir gevent-server
+made new file genvet_server.py
+incorporated same funcs from server.py
