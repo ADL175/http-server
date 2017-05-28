@@ -13,19 +13,19 @@ def client(message):
     client.sendall(message.encode('utf8'))
 
     buffer_length = 8
-    message = ''
+    message_received = ''
 
     while True:
         part = client.recv(buffer_length).decode()
-        message += part
+        message_received += part
 
-        if message.endswith('\r\n\r\n'):
+        if message_received.endswith('\r\n\r\n'):
             break
 
     client.shutdown(socket.SHUT_WR)
     client.close()
-    print(message[:-1])
-    return message[:-1]
+    print(message_received[:-1])
+    return message_received[:-1]
 
 if __name__ == '__main__': #pragma: no cover
     """Module code that will run in console."""
