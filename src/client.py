@@ -22,6 +22,7 @@ def client(message_to_send):
         if b'*' in message_received:
             break
 
+    client.shutdown(socket.SHUT_WR)
     client.close()
     print(message_received[:-1].decode())
     return message_received[:-1].decode()
