@@ -1,7 +1,5 @@
-# http-server
+# HTTP Server
 
-<h1>Socket Echo Server</h1>
+Completed by Miguel Pena and David Lim
 
-<h2>Task</h2>
-
-Server is set up to receive message from Client, and echo message back to Client. Client should receive the same message it sent out. 
+This HTTP server simply accepts a message from a client and returns a valid HTTP response.

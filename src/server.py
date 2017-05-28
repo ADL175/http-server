@@ -1,4 +1,4 @@
-"""This is the server socket for our echo application."""
+"""This is the server code for an HTTP server."""
 
 import socket
 import sys
@@ -6,20 +6,23 @@ from email.utils import formatdate
 
 
 def response_ok():
-    message = b'HTTP/1.1 200 OK\r\n\r\n'
+    """Return a valid HTTP response."""
+    message = b'HTTP/1.1 200 OK\r\n'
     message += u'Date: {}'.format(formatdate(usegmt=True)).encode('utf8')
+    message += b'\r\nContent-Type: text/plain'
     return message + b'\r\n\r\n'
 
 
 def response_error():
+    """Return an internal error response."""
     return b'HTTP/1.1 500 Internal Server Error\r\n\r\n'
 
 def server():
-    """Server set up to receive message from client and echo message back to client."""
+    """Listens for message and returns an HTTP response."""
     server = socket.socket(socket.AF_INET,
                            socket.SOCK_STREAM, socket.IPPROTO_TCP)
+    address = ('127.0.0.1', 5018)
 
-    address = ('127.0.0.1', 5010)
     server.bind(address)
     server.listen(1)
 
@@ -35,7 +38,11 @@ def server():
                 part = connection.recv(buffer_length)
                 message += part
 
-                if b'*' in message:
+
+                if message.endswith(b'\r\n\r\n'):
+                    print(message.split(b'\r\n\r\n')[0])
+                    connection.sendall(response_ok())
+                    connection.close()
                     break
 
             connection.sendall(message)
@@ -49,6 +56,6 @@ def server():
 
 
 if __name__ == '__main__': # pragma: no cover
-    """This block of code will run from console."""
+    """Server code that will in console."""
     print('Your echo server is up and running')
     server()

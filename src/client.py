@@ -1,11 +1,12 @@
-"""This is the client socket for our echo application."""
+"""This is the client code for an HTTP server."""
 
 import socket
 import sys
 
-def client(message_to_send):
-    """Client set up to send message to server."""
-    address_info = socket.getaddrinfo('127.0.0.1', 5010)
+def client(message):
+    """Sends message to server and receives an HTTP response."""
+    address_info = socket.getaddrinfo('127.0.0.1', 5018)
+
     stream_info = [i for i in address_info if i[1] == socket.SOCK_STREAM][0]
     client = socket.socket(*stream_info[:3])
     client.connect(stream_info[-1])
@@ -13,21 +14,21 @@ def client(message_to_send):
     client.sendall(message_to_send.encode('utf8'))
 
     buffer_length = 8
-    message_received = b''
+    message_received = ''
 
     while True:
-        part = client.recv(buffer_length)
+        part = client.recv(buffer_length).decode()
         message_received += part
 
-        if b'*' in message_received:
+        if message_received.endswith('\r\n\r\n'):
             break
 
     client.shutdown(socket.SHUT_WR)
     client.close()
-    print(message_received[:-1].decode())
-    return message_received[:-1].decode()
+    print(message_received[:-1])
+    return message_received[:-1]
 
 if __name__ == '__main__': #pragma: no cover
-    """This block of code will run from console."""
-    message_to_send = sys.argv[1]
-    client(message_to_send)
+    """Module code that will run in console."""
+    message = sys.argv[1]
+    client(message)
