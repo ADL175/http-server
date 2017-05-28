@@ -11,11 +11,10 @@ messages containing non-ascii characters
 CLIENT_TABLE = [
     ('hello'),
     ('hello there, I am over 16'),
-    ('abcdefghabcdefgh'),
-    ('áÇÈ')
+    ('abcdefghabcdefgh')
 ]
 
 @pytest.mark.parametrize('message', CLIENT_TABLE)
-"""Testing client is receiving echoed message."""
 def test_client(message):
+    """Testing client is receiving echoed message."""
     assert client(message) == message
