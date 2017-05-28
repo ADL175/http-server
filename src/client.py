@@ -1,10 +1,10 @@
-"""This is the client socket for our echo application."""
+"""This is the client code for an HTTP server."""
 
 import socket
 import sys
 
 def client(message):
-    """."""
+    """Sends message to server and receives an HTTP response."""
     address_info = socket.getaddrinfo('127.0.0.1', 5017)
     stream_info = [i for i in address_info if i[1] == socket.SOCK_STREAM][0]
     client = socket.socket(*stream_info[:3])
@@ -28,6 +28,6 @@ def client(message):
     return message[:-1]
 
 if __name__ == '__main__': #pragma: no cover
-    """."""
+    """Module code that will run in console."""
     message = sys.argv[1]
     client(message)
