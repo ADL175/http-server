@@ -5,7 +5,7 @@ import sys
 
 def client(message_to_send):
     """Client set up to send message to server."""
-    address_info = socket.getaddrinfo('127.0.0.1', 5005)
+    address_info = socket.getaddrinfo('127.0.0.1', 5009)
     stream_info = [i for i in address_info if i[1] == socket.SOCK_STREAM][0]
     client = socket.socket(*stream_info[:3])
     client.connect(stream_info[-1])
@@ -23,10 +23,10 @@ def client(message_to_send):
             break
 
     client.close()
-    print(message_received[:-1])
-    return message_received[:-1]
+    print(message_received[:-1].decode())
+    return message_received[:-1].decode()
 
 if __name__ == '__main__': #pragma: no cover
-    """Main function for client server."""
+    """This block of code will run from console."""
     message_to_send = sys.argv[1]
     client(message_to_send)
