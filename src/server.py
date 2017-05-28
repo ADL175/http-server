@@ -8,7 +8,7 @@ def server():
     """Server set up to receive message from client and echo message back to client."""
     server = socket.socket(socket.AF_INET,
                            socket.SOCK_STREAM, socket.IPPROTO_TCP)
-    address = ('127.0.0.1', 5000)
+    address = ('127.0.0.1', 5002)
     server.bind(address)
     server.listen(1)
 
@@ -24,7 +24,7 @@ def server():
                 part = connection.recv(buffer_length).decode()
                 message += part
 
-                if len(part) < buffer_length:
+                if '*' in message:
                     break
 
             connection.sendall(message.encode('utf8'))
