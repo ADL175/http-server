@@ -3,30 +3,30 @@
 import socket
 import sys
 
-def client(message):
+def client(message_to_send):
     """Client set up to send message to server."""
-    address_info = socket.getaddrinfo('127.0.0.1', 5003)
+    address_info = socket.getaddrinfo('127.0.0.1', 5005)
     stream_info = [i for i in address_info if i[1] == socket.SOCK_STREAM][0]
     client = socket.socket(*stream_info[:3])
     client.connect(stream_info[-1])
-    message += '*'
-    client.sendall(message.encode('utf8'))
+    message_to_send += '*'
+    client.sendall(message_to_send.encode('utf8'))
 
     buffer_length = 8
-    message = ''
+    message_received = b''
 
     while True:
-        part = client.recv(buffer_length).decode()
-        message += part
+        part = client.recv(buffer_length)
+        message_received += part
 
-        if '*' in message:
+        if b'*' in message_received:
             break
 
     client.close()
-    print(message[:-1])
-    return message[:-1]
+    print(message_received[:-1])
+    return message_received[:-1]
 
 if __name__ == '__main__': #pragma: no cover
     """Main function for client server."""
-    message = sys.argv[1]
-    client(message)
+    message_to_send = sys.argv[1]
+    client(message_to_send)

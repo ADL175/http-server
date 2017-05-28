@@ -1,20 +1,16 @@
 # -*- coding: utf-8 -*-
-import pytest
-from client import client
-"""
-messages shorter than one buffer in length
-messages longer than several buffers in length
-messages that are an exact multiple of one buffer in length
-messages containing non-ascii characters
-"""
+"""Test echo server."""
 
-CLIENT_TABLE = [
-    ('hello'),
-    ('hello there, I am over 16'),
-    ('abcdefghabcdefgh')
+import pytest
+
+
+LESS_THAN_BUFFER_LENGTH_TABLE = [
+    ()
 ]
 
-@pytest.mark.parametrize('message', CLIENT_TABLE)
-def test_client(message):
-    """Testing client is receiving echoed message."""
-    assert client(message) == message
+LONGER_THAN_SEVERAL_BUFFER_LENGTHS_TABLE = []
+
+EXACT_BUFFER_LENGTH_TABLE = []
+
+NON_ASCII_CHAR_TABLE = []
+

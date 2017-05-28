@@ -8,7 +8,7 @@ def server():
     """Server set up to receive message from client and echo message back to client."""
     server = socket.socket(socket.AF_INET,
                            socket.SOCK_STREAM, socket.IPPROTO_TCP)
-    address = ('127.0.0.1', 5003)
+    address = ('127.0.0.1', 5005)
     server.bind(address)
     server.listen(1)
 
@@ -18,16 +18,16 @@ def server():
 
             buffer_length = 8
             message_complete = False
-            message = ''
+            message = b''
 
             while not message_complete:
-                part = connection.recv(buffer_length).decode()
+                part = connection.recv(buffer_length)
                 message += part
 
-                if '*' in message:
+                if b'*' in message:
                     break
 
-            connection.sendall(message.encode('utf8'))
+            connection.sendall(message)
             connection.close()
 
         except KeyboardInterrupt:
