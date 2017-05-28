@@ -15,10 +15,11 @@ def response_error():
     return b'HTTP/1.1 500 Internal Server Error\r\n\r\n'
 
 def server():
-    """."""
+    """Server set up to receive message from client and echo message back to client."""
     server = socket.socket(socket.AF_INET,
                            socket.SOCK_STREAM, socket.IPPROTO_TCP)
-    address = ('127.0.0.1', 5001)
+
+    address = ('127.0.0.1', 5010)
     server.bind(address)
     server.listen(1)
 
@@ -28,18 +29,17 @@ def server():
 
             buffer_length = 8
             message_complete = False
-            message = ''
+            message = b''
 
             while not message_complete:
-                part = connection.recv(buffer_length).decode()
+                part = connection.recv(buffer_length)
                 message += part
 
-                if message.endswith('\r\n\r\n'):
-                    print(message)
-                    response = response_ok()
-                    connection.sendall(response)
-                    connection.close()
+                if b'*' in message:
                     break
+
+            connection.sendall(message)
+            connection.close()
 
         except KeyboardInterrupt:
             server.shutdown(socket.SHUT_WR)
@@ -49,6 +49,6 @@ def server():
 
 
 if __name__ == '__main__': # pragma: no cover
-    """."""
+    """This block of code will run from console."""
     print('Your echo server is up and running')
     server()
