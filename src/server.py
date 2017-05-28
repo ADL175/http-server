@@ -8,7 +8,7 @@ def server():
     """Server set up to receive message from client and echo message back to client."""
     server = socket.socket(socket.AF_INET,
                            socket.SOCK_STREAM, socket.IPPROTO_TCP)
-    address = ('127.0.0.1', 5009)
+    address = ('127.0.0.1', 5010)
     server.bind(address)
     server.listen(1)
 
