@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Test echo server."""
+"""Test HTTP server."""
 
 import pytest
 
@@ -56,10 +56,26 @@ import pytest
 # Step 1 tests
 
 
+def test_response_ok():
+    """Assert if response_ok() returns a valid HTTP response."""
+    valid = True
+    from server import response_ok
+    response = response_ok()
+    if response.startswith(b'HTTP/1.1 200 OK'):
+        response_list = response.split(b'\r\n')
+        response_list = response_list[1:]
+        response_list = [line for line in response_list if line is not b'']
+
+        for line in response_list:
+            if not (line.startswith(b'Date:') or line.startswith(b'Content-Type') or line.startswith(b'Content-Length')):
+                valid = False
+
+        assert valid
 
 
 
 def test_response_error():
+    """Asssert if response_error() returns a valid HTTP error response"""
     from server import response_error
     assert response_error() == b'HTTP/1.1 500 Internal Server Error\r\n\r\n'
 
