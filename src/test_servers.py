@@ -82,7 +82,7 @@ def test_response_ok():
 # Step 2 test for response_error()
 
 ERROR_RESPONSE_TABLE = [
-    ()
+    ('400', 'Bad Request', b'HTTP/1.1 400 Bad Request\r\n\r\n')
 ]
 
 @pytest.mark.parametrize('error_code, reason, HTTP_error_response', ERROR_RESPONSE_TABLE)

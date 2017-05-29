@@ -39,20 +39,20 @@ def response_ok():
 
 def response_error(error_code, reason):
     """Responds to client with a response error."""
-    if error_code == '400' and reason == 'Bad Request':
-        response = 'HTTP/1.1 {} {}\r\n\r\n'.format(error_code, reason)
-        return response.encode('utf8')
+    error_code_and_reason_dict = {
+        '400': 'Bad Request',
+        '401': 'Unauthorized',
+        '404': 'Not Found',
+        '500': 'Server Error',
+        '501': 'Not Implemented',
+        '505': 'HTTP Version Not Supported'
+    }
 
-    elif error_code == '401' and reason == 'Not Found':
-        response = 'HTTP/1.1 {} {}\r\n\r\n'.format(error_code, reason)
-        return response.encode('utf8')
-
-    elif error_code == '500' and reason == 'Server Error':
-        response = 'HTTP/1.1 {} {}\r\n\r\n'.format(error_code, reason)
-        return response.encode('utf8')
+    if error_code_and_reason_dict.get(error_code) == reason:
+        return 'HTTP/1.1 {} {}\r\n\r\n'.format(error_code, reason).encode('utf8')
 
     else:
-        return 'HTTP/1.1 400 Bad Request\r\n\r\n'
+        raise ValueError('Invalid error code and/or reason.')
 
 
 def server():
