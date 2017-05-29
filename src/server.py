@@ -12,11 +12,11 @@ GET /index.html HTTP/1.1\r\nHost: www.foo.combo\r\n\r\n
 
 def parse_request(request):
     """Take client's incoming request and parses request into list to check values against."""
-    list_str = request.split('\r\n')
+    list_str = request.split(b'\r\n')
     list_str[0] = list_str[0].split()
-    if list_str[0][0] == 'GET':
-        if list_str[0][2] == 'HTTP/1.1':
-            if 'Host:' in list_str[1]:
+    if list_str[0][0] == b'GET':
+        if list_str[0][2] == b'HTTP/1.1':
+            if b'Host:' in list_str[1]:
                 return list_str[0][1]
 
             else:
@@ -59,7 +59,7 @@ def server():
     """Server function to process client request."""
     server = socket.socket(socket.AF_INET,
                            socket.SOCK_STREAM, socket.IPPROTO_TCP)
-    address = ('127.0.0.1', 5005)
+    address = ('127.0.0.1', 5001)
     server.bind(address)
     server.listen(1)
 

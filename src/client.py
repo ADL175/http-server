@@ -6,7 +6,8 @@ import sys
 
 def client(message_to_send):
     """Sends message to server and receives an HTTP response."""
-    address_info = socket.getaddrinfo('127.0.0.1', 5005)
+    message_to_send = 'GET /index.html HTTP/1.1\r\nHost: www.foo.combo\r\n\r\n' # get rid of this later
+    address_info = socket.getaddrinfo('127.0.0.1', 5001)
     stream_info = [i for i in address_info if i[1] == socket.SOCK_STREAM][0]
     client = socket.socket(*stream_info[:3])
     client.connect(stream_info[-1])
