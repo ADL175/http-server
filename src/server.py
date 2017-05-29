@@ -21,7 +21,7 @@ def server():
     """Listens for message and returns an HTTP response."""
     server = socket.socket(socket.AF_INET,
                            socket.SOCK_STREAM, socket.IPPROTO_TCP)
-    address = ('127.0.0.1', 5018)
+    address = ('127.0.0.1', 5021)
     server.bind(address)
     server.listen(1)
 
@@ -52,5 +52,5 @@ def server():
 
 if __name__ == '__main__': # pragma: no cover
     """Server code that will in console."""
-    print('Your echo server is up and running')
+    print('Your HTTP server is up and running')
     server()
