@@ -73,7 +73,19 @@ def test_response_ok():
         assert valid
 
 
-def test_response_error():
-    """Asssert if response_error() returns a valid HTTP error response"""
+# def test_response_error():
+#     """Asssert if response_error() returns a valid HTTP error response"""
+#     from server import response_error
+#     assert response_error() == b'HTTP/1.1 500 Internal Server Error\r\n\r\n'
+
+
+# Step 2 test for response_error()
+
+ERROR_RESPONSE_TABLE = [
+    ()
+]
+
+@pytest.mark.parametrize('error_code, reason, HTTP_error_response', ERROR_RESPONSE_TABLE)
+def test_response_error(error_code, reason):
     from server import response_error
-    assert response_error() == b'HTTP/1.1 500 Internal Server Error\r\n\r\n'
+
