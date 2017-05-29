@@ -34,7 +34,6 @@ def parse_request(request):
         raise ValueError('Should be GET request')
 
 
-
 def response_ok():
     """Return a valid HTTP response."""
     message = b'HTTP/1.1 200 OK\r\n'
@@ -60,6 +59,7 @@ def response_error(error_code, reason):
 
     else:
         return 'HTTP/1.1 500 Internal Server Error\r\n\r\n'
+
 
 def server():
     """Server function to process client request."""
@@ -95,7 +95,6 @@ def server():
                     response = response_ok()
                     connection.sendall(response)
                     connection.close()
-
 
         except KeyboardInterrupt:
             server.shutdown(socket.SHUT_WR)
