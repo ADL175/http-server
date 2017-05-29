@@ -1,4 +1,4 @@
-"""This is the server socket for our echo application."""
+"""This is the server code for an HTTP server."""
 
 import socket
 import sys
@@ -36,10 +36,11 @@ def parse_request(request):
 
 
 def response_ok():
-    """Responds to client with a reponse ok."""
-    message = b'HTTP/1.1 200 OK\r\n\r\n'
+    """Return a valid HTTP response."""
+    message = b'HTTP/1.1 200 OK\r\n'
     message += u'Date: {}'.format(formatdate(usegmt=True)).encode('utf8')
-    return message + b'\r\n\r\n'
+    message += b'\r\nContent-Type: text/plain\r\n\r\n'
+    return message
 
 
 def response_error(error_code, reason):
@@ -57,9 +58,8 @@ def response_error(error_code, reason):
         response = 'HTTP/1.1 {} {}\r\n\r\n'.format(error_code, reason)
         return response.encode('utf8')
 
-
-
-    # return b'HTTP/1.1 500 Internal Server Error\r\n\r\n'
+    else:
+        return 'HTTP/1.1 500 Internal Server Error\r\n\r\n'
 
 def server():
     """Server function to process client request."""
@@ -75,17 +75,16 @@ def server():
 
             buffer_length = 8
             message_complete = False
-            message = ''
+            message = b''
 
             while not message_complete:
-                part = connection.recv(buffer_length).decode()
+                part = connection.recv(buffer_length)
                 message += part
 
-                if message.endswith('\r\n\r\n'):
+                if message.endswith(b'\r\n\r\n'):
 
                     try:
                         print(parse_request(message))
-
 
                     except ValueError:
                         response = response_error('400', 'Bad Request')
@@ -96,7 +95,7 @@ def server():
                     response = response_ok()
                     connection.sendall(response)
                     connection.close()
-                    break
+
 
         except KeyboardInterrupt:
             server.shutdown(socket.SHUT_WR)
@@ -105,7 +104,7 @@ def server():
             sys.exit()
 
 
-if __name__ == '__main__': # pragma: no cover
-    """."""
-    print('Your echo server is up and running')
+if __name__ == '__main__':  # pragma: no cover
+    """Server code that will in console."""
+    print('Your HTTP server is up and running')
     server()
