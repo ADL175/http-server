@@ -14,23 +14,18 @@ def parse_request(request):
     """Take client's incoming request and parses request into list to check values against."""
     list_str = request.split('\r\n')
     list_str[0] = list_str[0].split()
-    # list_str[1] = list_str[1].split()
-    print(list_str)
     if list_str[0][0] == 'GET':
         if list_str[0][2] == 'HTTP/1.1':
             if 'Host:' in list_str[1]:
                 return list_str[0][1]
 
             else:
-                print('get host error')
                 raise ValueError('Invalid host syntax')
 
         else:
-            print('get http error')
             raise ValueError('Wrong HTTP type')
 
     else:
-        print('get error')
         raise ValueError('Should be GET request')
 
 
@@ -44,7 +39,6 @@ def response_ok():
 
 def response_error(error_code, reason):
     """Responds to client with a response error."""
-    print('response error called')
     if error_code == '400' and reason == 'Bad Request':
         response = 'HTTP/1.1 {} {}\r\n\r\n'.format(error_code, reason)
         return response.encode('utf8')
@@ -58,7 +52,7 @@ def response_error(error_code, reason):
         return response.encode('utf8')
 
     else:
-        return 'HTTP/1.1 500 Internal Server Error\r\n\r\n'
+        return 'HTTP/1.1 400 Bad Request\r\n\r\n'
 
 
 def server():
@@ -85,16 +79,16 @@ def server():
 
                     try:
                         print(parse_request(message))
+                        response = response_ok()
+                        connection.sendall(response)
+                        connection.close()
+                        break
 
                     except ValueError:
                         response = response_error('400', 'Bad Request')
                         connection.sendall(response)
                         connection.close()
                         break
-
-                    response = response_ok()
-                    connection.sendall(response)
-                    connection.close()
 
         except KeyboardInterrupt:
             server.shutdown(socket.SHUT_WR)
