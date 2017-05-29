@@ -3,14 +3,13 @@
 import socket
 import sys
 
-def client(message):
+def client(message_to_send):
     """Sends message to server and receives an HTTP response."""
-    address_info = socket.getaddrinfo('127.0.0.1', 5018)
-
+    address_info = socket.getaddrinfo('127.0.0.1', 5028)
     stream_info = [i for i in address_info if i[1] == socket.SOCK_STREAM][0]
     client = socket.socket(*stream_info[:3])
     client.connect(stream_info[-1])
-    message_to_send += '*'
+    message_to_send += '\r\n\r\n'
     client.sendall(message_to_send.encode('utf8'))
 
     buffer_length = 8
