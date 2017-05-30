@@ -12,11 +12,11 @@ GET /index.html HTTP/1.1\r\nHost: www.foo.combo\r\n\r\n
 
 def parse_request(request):
     """Take client's incoming request and parses request into list to check values against."""
-    list_str = request.split(b'\r\n')
+    list_str = request.split('\r\n')
     list_str[0] = list_str[0].split()
-    if list_str[0][0] == b'GET':
-        if list_str[0][2] == b'HTTP/1.1':
-            if b'Host:' in list_str[1]:
+    if list_str[0][0] == 'GET':
+        if list_str[0][2] == 'HTTP/1.1':
+            if 'Host:' in list_str[1]:
                 return list_str[0][1]
 
             else:
@@ -26,7 +26,7 @@ def parse_request(request):
             raise ValueError('Wrong HTTP type')
 
     else:
-        raise ValueError('Should be GET request')
+        raise ValueError('Request type not implemented. Should be GET request')
 
 
 def response_ok():
@@ -59,7 +59,7 @@ def server():
     """Server function to process client request."""
     server = socket.socket(socket.AF_INET,
                            socket.SOCK_STREAM, socket.IPPROTO_TCP)
-    address = ('127.0.0.1', 5001)
+    address = ('127.0.0.1', 5010)
     server.bind(address)
     server.listen(1)
 
@@ -69,13 +69,13 @@ def server():
 
             buffer_length = 8
             message_complete = False
-            message = b''
+            message = ''
 
             while not message_complete:
-                part = connection.recv(buffer_length)
+                part = connection.recv(buffer_length).decode()
                 message += part
 
-                if message.endswith(b'\r\n\r\n'):
+                if message.endswith('\r\n\r\n'):
 
                     try:
                         print(parse_request(message))
@@ -93,7 +93,7 @@ def server():
         except KeyboardInterrupt:
             server.shutdown(socket.SHUT_WR)
             server.close()
-            print('Shutting down echo server...')
+            print('\nShutting down HTTP server...')
             sys.exit()
 
 
